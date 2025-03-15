@@ -1,0 +1,72 @@
+/* Estilos gerais */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .container {
+    padding: 20px;
+  }
+  
+  .centralizado {
+    max-width: 400px;
+    margin: 50px auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  /* Menu vertical */
+  .menu-vertical {
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #333;
+    padding-top: 20px;
+  }
+  
+  .menu-vertical ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-vertical ul li {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .menu-vertical ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+  }
+  
+  .menu-vertical ul li a:hover {
+    background-color: #575757;
+  }
+  
+  /* Área de conteúdo (com margem à esquerda para o menu) */
+  .conteudo {
+    margin-left: 220px;
+    padding: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  table, th, td {
+    border: 1px solid #ccc;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: center;
+  }
+  

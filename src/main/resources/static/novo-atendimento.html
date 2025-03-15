@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Novo Atendimento - Sistema de Atendimentos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="menu-vertical">
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="novo-atendimento.html">Novo Atendimento</a></li>
+      <li><a href="atendimentos-abertos.html">Atendimentos Abertos</a></li>
+      <li><a href="atendimentos-finalizados.html">Finalizados/Desistências</a></li>
+      <li><a href="index.html" id="logout">Sair</a></li>
+    </ul>
+  </nav>
+
+  <div class="conteudo">
+    <h2>Cadastro de Novo Atendimento</h2>
+    <form id="form-atendimento">
+      <label for="nome">Nome do Paciente:</label>
+      <input type="text" id="nome" required>
+      
+      <label for="horarioEntrada">Horário de Entrada:</label>
+      <input type="datetime-local" id="horarioEntrada" required>
+      
+      <button type="submit">Cadastrar Atendimento</button>
+    </form>
+    <div id="msg-cadastro"></div>
+  </div>
+  
+  <script src="js/script.js"></script>
+</body>
+</html>
