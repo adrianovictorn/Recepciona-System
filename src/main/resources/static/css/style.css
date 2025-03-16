@@ -70,3 +70,23 @@ body {
     text-align: center;
   }
   
+  /* Esquema de cores para cada estado */
+  .estado-AGUARDANDO {
+    color: #000;
+  }
+  
+  .estado-EM_ATENDIMENTO {
+    background-color: #ffeb3b;  /* amarelo */
+    color: #000;
+  }
+  
+  .estado-FINALIZADO {
+    background-color: #4caf50;  /* verde */
+    color: #fff;
+  }
+  
+  .estado-DESISTENCIA {
+    background-color: #f44336;  /* vermelho */
+    color: #fff;
+  }
+  

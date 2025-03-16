@@ -27,6 +27,7 @@ public class PacienteService {
         paciente.setNome(createPacienteDTO.nome());
         paciente.setHorarioEntrada(createPacienteDTO.horarioEntrada());
         paciente.setEstado(Estado.AGUARDANDO);
+        paciente.setSetor(createPacienteDTO.setor());
         
         pacienteRepository.save(paciente);
 
@@ -42,6 +43,7 @@ public class PacienteService {
         Paciente paciente = pacienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
         paciente.setHorarioSaida(updatePacienteDTO.horarioDesaida());
         paciente.setEstado(updatePacienteDTO.estado());
+        paciente.setSetor(updatePacienteDTO.setor());
 
         pacienteRepository.save(paciente);
         ViewPacienteDTO pacienteDTO = ViewPacienteDTO.fromEntity(paciente);

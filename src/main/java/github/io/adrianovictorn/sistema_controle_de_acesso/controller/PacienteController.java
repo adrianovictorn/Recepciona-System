@@ -17,6 +17,7 @@ import github.io.adrianovictorn.sistema_controle_de_acesso.dto.CreatePacienteDTO
 import github.io.adrianovictorn.sistema_controle_de_acesso.dto.ListPacienteDTO;
 import github.io.adrianovictorn.sistema_controle_de_acesso.dto.UpdatePacienteDTO;
 import github.io.adrianovictorn.sistema_controle_de_acesso.dto.ViewPacienteDTO;
+import github.io.adrianovictorn.sistema_controle_de_acesso.entity.enums.Estado;
 import github.io.adrianovictorn.sistema_controle_de_acesso.service.PacienteService;
 
 @RestController
@@ -47,24 +48,28 @@ public class PacienteController {
         return ResponseEntity.ok(pacienteService.listarAtendimentos());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ViewPacienteDTO> atualizarPaciente(@PathVariable Long id, @RequestBody UpdatePacienteDTO pacienteDTO) {
-        return ResponseEntity.ok(pacienteService.atualizarAtendimento(id, pacienteDTO));
-    }
+    
 
-    @GetMapping("/abertos")
-    public ResponseEntity<List<ListPacienteDTO>> listarAtendimentosAbertos() {
+    @GetMapping("/finalizados")
+    public ResponseEntity<List<ListPacienteDTO>> listarAtendimentosAberto() {
         List<ListPacienteDTO> abertos = pacienteService.listarAtendimentos().stream()
-            .filter(dto -> dto.estado().equals("AGUARDANDO"))
+            .filter(dto -> dto.estado() == Estado.FINALIZADO || dto.estado() == Estado.DESISTENCIA)
             .toList();
         return ResponseEntity.ok(abertos);
     }   
 
-    @GetMapping("/finalizados")
-    public ResponseEntity<List<ListPacienteDTO>> listarAtendimentosFinalizados() {
-        List<ListPacienteDTO> finalizados = pacienteService.listarAtendimentos().stream()
-            .filter(dto -> !dto.estado().equals("AGUARDANDO"))
+  @GetMapping("/abertos")
+    public ResponseEntity<List<ListPacienteDTO>> listarAtendimentosAbertos() {
+        List<ListPacienteDTO> abertos = pacienteService.listarAtendimentos().stream()
+            .filter(dto -> dto.estado() == Estado.AGUARDANDO || dto.estado() == Estado.EM_ATENDIMENTO)
             .toList();
-        return ResponseEntity.ok(finalizados);
+        return ResponseEntity.ok(abertos);
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ViewPacienteDTO> atualizarPaciente(@PathVariable Long id, @RequestBody UpdatePacienteDTO pacienteDTO) {
+        return ResponseEntity.ok(pacienteService.atualizarAtendimento(id, pacienteDTO));
+    }
+    
 }

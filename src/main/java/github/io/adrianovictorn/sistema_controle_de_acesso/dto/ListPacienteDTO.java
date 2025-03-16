@@ -3,6 +3,7 @@ package github.io.adrianovictorn.sistema_controle_de_acesso.dto;
 
 import github.io.adrianovictorn.sistema_controle_de_acesso.entity.Paciente;
 import github.io.adrianovictorn.sistema_controle_de_acesso.entity.enums.Estado;
+import github.io.adrianovictorn.sistema_controle_de_acesso.entity.enums.Setor;
 
 public record ListPacienteDTO(
 
@@ -10,7 +11,8 @@ public record ListPacienteDTO(
     String nome,
     String horarioEntrada,
     String horarioSaida,
-    Estado estado
+    Estado estado,
+    Setor setor
 ) {
     
     public static ListPacienteDTO fromEntity(Paciente paciente) {
@@ -19,7 +21,8 @@ public record ListPacienteDTO(
             paciente.getNome(),
             paciente.getHorarioEntrada() != null ? paciente.getHorarioEntrada().toString() : "",
             paciente.getHorarioSaida() != null ? paciente.getHorarioSaida().toString() : "",
-            paciente.getEstado()
+            paciente.getEstado(),
+            paciente.getSetor()
         );
     }
 }

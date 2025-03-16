@@ -26,6 +26,16 @@
       <label for="horarioEntrada">Horário de Entrada:</label>
       <input type="datetime-local" id="horarioEntrada" required>
       
+      <label for="setor">Setor:</label>
+      <select id="setor" required>
+        <option value="ATENCAO_BASICA">Atenção Básica</option>
+        <option value="SECRETARIA">Secretária</option>
+        <option value="VISA">Visa</option>
+        <option value="VIEP">Viep</option>
+        <option value="CPD">Cpd</option>
+        <option value="ALMOXARIFADO_COMPRAS">Almoxarifado/Compras</option>
+      </select>
+
       <button type="submit">Cadastrar Atendimento</button>
     </form>
     <div id="msg-cadastro"></div>

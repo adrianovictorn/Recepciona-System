@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 import github.io.adrianovictorn.sistema_controle_de_acesso.entity.enums.Estado;
+import github.io.adrianovictorn.sistema_controle_de_acesso.entity.enums.Setor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -44,6 +45,9 @@ public class Paciente {
 
     @Enumerated(EnumType.STRING)
     private Estado estado;
+
+    @Enumerated(EnumType.STRING)
+    private Setor setor;
 
 
 }
