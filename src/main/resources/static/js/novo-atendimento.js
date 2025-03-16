@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function carregarPacientes() {
         try {
-            const response = await fetch("http://localhost:8080/api/paciente");
+            const response = await fetch('/api/paciente');
             if (!response.ok) {
                 throw new Error("Erro ao buscar pacientes");
             }
