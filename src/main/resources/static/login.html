@@ -4,20 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login - Sistema de Atendimentos</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
+  
   <div class="container centralizado">
+  <div>
+    
+    <h1>Recepciona System</h1>
+  </div>
     <h2>Login</h2>
     <!-- Formulário enviado para /login via POST -->
     <form id="login-form" action="/login" method="post">
-      <label for="username">Usuário</label>
-      <input type="text" id="username" name="username" required>
+        <label for="username">Usuário:</label>
+        <input type="text" id="username" name="username" required placeholder="Digite seu usuário">
       
-      <label for="password">Senha</label>
-      <input type="password" id="password" name="password" required>
-      
-      <button type="submit">Entrar</button>
+
+        
+        <label for="password">Senha:</label>
+         <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+    
+      <button class="button" type="submit">Entrar</button>
     </form>
   </div>
 </body>

@@ -7,18 +7,22 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <header class="cabecalho">
+    <h1>Recepciona System</h1>
+  </header>
+  
   <nav class="menu-vertical">
     <ul>
       <li><a href="dashboard.html">Dashboard</a></li>
       <li><a href="novo-atendimento.html">Novo Atendimento</a></li>
       <li><a href="atendimentos-abertos.html">Atendimentos Abertos</a></li>
       <li><a href="atendimentos-finalizados.html">Finalizados/Desistências</a></li>
-      <li><a href="index.html" id="logout">Sair</a></li>
+      <li><a href="login.html" id="logout">Sair</a></li>
     </ul>
   </nav>
   
   <div class="conteudo">
-    <h2>Atendimentos Finalizados/Desistências</h2>
+    <h2>Atendimentos Finalizados</h2>
     <table id="tabela-finalizados">
       <thead>
         <tr>
@@ -35,113 +39,119 @@
       </tbody>
     </table>
 
-    <button onclick="gerarRelatorioPDF()">Baixar Relatório PDF</button>
+    <h2>Atendimentos por Desistência</h2>
+    <table id="tabela-desistencias">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Horário Entrada</th>
+          <th>Horário Saída</th>
+          <th>Setor</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Conteúdo carregado via JS -->
+      </tbody>
+    </table>
 
+    <button onclick="gerarRelatorioPDF()">Baixar Relatório PDF</button>
   </div>
+  
+  <footer>
+    <p>Desenvolvido por Adriano Victor N. Ribeiro</p>
+  </footer>
   
   <script src="js/atendimento-finalizado.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
   <script>
-window.gerarRelatorioPDF = async function () {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+    // Gerar PDF já existente permanece inalterado
+    window.gerarRelatorioPDF = async function () {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
 
-  try {
-      // Buscar dados dos atendimentos finalizados
-      const response = await fetch('/api/paciente/finalizados');
-      const atendimentos = await response.json();
+      try {
+        const response = await fetch('/api/paciente/finalizados');
+        const atendimentos = await response.json();
+        const finalizados = atendimentos.filter(p => p.estado === 'FINALIZADO');
+        const desistencias = atendimentos.filter(p => p.estado === 'DESISTENCIA');
 
-      // Filtrar apenas Finalizados e Desistências
-      const finalizados = atendimentos.filter(p => p.estado === 'FINALIZADO');
-      const desistencias = atendimentos.filter(p => p.estado === 'DESISTENCIA');
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Recepciona System", 10, 10);
+        doc.setFontSize(14);
+        doc.text("Relatório de Atendimentos", 10, 20);
+        let y = 30;
 
-      // Cabeçalho do sistema
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(18);
-      doc.text("Recepciona System", 10, 10);
-
-      doc.setFontSize(14);
-      doc.text("Relatório de Atendimentos", 10, 20);
-
-      let y = 30; // Posição inicial para a primeira tabela
-
-      // Função para formatar horário
-      function formatarHorario(horario) {
+        function formatarHorario(horario) {
           const data = new Date(horario);
           return data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      }
+        }
 
-      // Função para formatar setor com base no Enum
-      function formatarSetor(setor) {
+        function formatarSetor(setor) {
           const setores = {
-              "ATENCAO_BASICA": "Atenção Básica",
-              "SECRETARIA": "Secretaria",
-              "VISA": "Vigilância Sanitária",
-              "VIEP": "Vigilância Epidemiológica",
-              "CPD": "Centro de Processamento de Dados",
-              "ALMOXARIFADO_COMPRAS": "Almoxarifado e Compras"
+            "ATENCAO_BASICA": "Atenção Básica",
+            "SECRETARIA": "Secretaria",
+            "VISA": "Vigilância Sanitária",
+            "VIEP": "Vigilância Epidemiológica",
+            "CPD": "Centro de Processamento de Dados",
+            "ALMOXARIFADO_COMPRAS": "Almoxarifado e Compras"
           };
           return setores[setor] || "Não informado";
-      }
+        }
 
-      // Tabela de Atendimentos Finalizados
-      if (finalizados.length > 0) {
+        if (finalizados.length > 0) {
           doc.setFontSize(12);
-          doc.setTextColor(0, 102, 204); // Azul
+          doc.setTextColor(0, 102, 204);
           doc.text("Atendimentos Finalizados", 10, y);
           y += 5;
-
           doc.autoTable({
-              startY: y,
-              head: [['Nome', 'Entrada', 'Saída', 'Setor']],
-              body: finalizados.map(paciente => [
-                  paciente.nome,
-                  formatarHorario(paciente.horarioEntrada),
-                  formatarHorario(paciente.horarioSaida),
-                  formatarSetor(paciente.setor)
-              ]),
-              theme: 'grid',
-              styles: { fontSize: 10, cellPadding: 2 },
-              headStyles: { fillColor: [0, 102, 204] }, // Azul
-              alternateRowStyles: { fillColor: [240, 240, 240] }, // Cinza claro
+            startY: y,
+            head: [['Nome', 'Entrada', 'Saída', 'Setor']],
+            body: finalizados.map(paciente => [
+              paciente.nome,
+              formatarHorario(paciente.horarioEntrada),
+              formatarHorario(paciente.horarioSaida),
+              formatarSetor(paciente.setor)
+            ]),
+            theme: 'grid',
+            styles: { fontSize: 10, cellPadding: 2 },
+            headStyles: { fillColor: [0, 102, 204] },
+            alternateRowStyles: { fillColor: [240, 240, 240] },
           });
+          y = doc.lastAutoTable.finalY + 10;
+        }
 
-          y = doc.lastAutoTable.finalY + 10; // Ajusta a posição para a próxima tabela
-      }
-
-      // Tabela de Desistências
-      if (desistencias.length > 0) {
+        if (desistencias.length > 0) {
           doc.setFontSize(12);
-          doc.setTextColor(204, 0, 0); // Vermelho
+          doc.setTextColor(204, 0, 0);
           doc.text("Atendimentos por Desistência", 10, y);
           y += 5;
-
           doc.autoTable({
-              startY: y,
-              head: [['Nome', 'Entrada', 'Saída', 'Setor']],
-              body: desistencias.map(paciente => [
-                  paciente.nome,
-                  formatarHorario(paciente.horarioEntrada),
-                  formatarHorario(paciente.horarioSaida),
-                  formatarSetor(paciente.setor)
-              ]),
-              theme: 'grid',
-              styles: { fontSize: 10, cellPadding: 2 },
-              headStyles: { fillColor: [204, 0, 0] }, // Vermelho
-              alternateRowStyles: { fillColor: [240, 240, 240] }, // Cinza claro
+            startY: y,
+            head: [['Nome', 'Entrada', 'Saída', 'Setor']],
+            body: desistencias.map(paciente => [
+              paciente.nome,
+              formatarHorario(paciente.horarioEntrada),
+              formatarHorario(paciente.horarioSaida),
+              formatarSetor(paciente.setor)
+            ]),
+            theme: 'grid',
+            styles: { fontSize: 10, cellPadding: 2 },
+            headStyles: { fillColor: [204, 0, 0] },
+            alternateRowStyles: { fillColor: [240, 240, 240] },
           });
+        }
+        doc.save("relatorio_atendimentos.pdf");
+      } catch (error) {
+        console.error("Erro ao gerar relatório:", error);
+        alert("Erro ao gerar relatório.");
       }
-
-      // Salvar o arquivo
-      doc.save("relatorio_atendimentos.pdf");
-  } catch (error) {
-      console.error("Erro ao gerar relatório:", error);
-      alert("Erro ao gerar relatório.");
-  }
-};
-
+    };
   </script>
+  <script src="js/menu.js"></script>
 </body>
 </html>

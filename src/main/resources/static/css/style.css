@@ -1,92 +1,255 @@
-/* Estilos gerais */
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Corpo da página */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .container {
-    padding: 20px;
-  }
-  
-  .centralizado {
-    max-width: 400px;
-    margin: 50px auto;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
-  }
-  
-  /* Menu vertical */
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Cabeçalho */
+.cabecalho {
+  background: linear-gradient(135deg, #4caf50 0%, #009688 100%);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.cabecalho h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Botão Hamburger (apenas em telas pequenas) */
+.hamburger {
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #fff;
+}
+
+/* Menu lateral */
+.menu-vertical {
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  padding: 20px 0;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.menu-vertical ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-vertical ul li {
+  margin: 10px 0;
+}
+
+.menu-vertical ul li a {
+  display: block;
+  padding: 15px 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.3s ease, transform 0.3s ease;
+  border-radius: 4px;
+}
+
+.menu-vertical ul li a:hover {
+  background: rgba(236, 240, 241, 0.2);
+  transform: translateX(5px);
+}
+
+.menu-vertical ul li a.active {
+  background: rgba(236, 240, 241, 0.3);
+  font-weight: bold;
+}
+
+/* Conteúdo principal - centralizado com largura maior para desktop */
+.conteudo {
+  margin: 40px auto;
+  padding: 40px;
+  max-width: 900px;
+}
+
+/* Títulos e parágrafos */
+.conteudo h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #34495e;
+  padding-bottom: 10px;
+}
+
+.conteudo p {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input,
+form select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+form button {
+  margin-top: 10px;
+  padding: 12px;
+  font-size: 18px;
+  color: #fff;
+  background: #3498db;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background: #2980b9;
+}
+
+/* Tabelas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Bloco para visualização mobile - tabela transformada em card */
+.table-card {
+  background-color: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.table-card-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.table-card-content {
+  display: none;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Rodapé */
+footer {
+  margin-left: 240px;
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+/* Cores para cada estado */
+.estado-AGUARDANDO {
+  color: #000;
+}
+
+.estado-EM_ATENDIMENTO {
+  background-color: #ffeb3b97;
+  color: #000;
+}
+
+.estado-FINALIZADO {
+  background-color: #4caf4fde;
+  color: #fff;
+}
+
+.estado-DESISTENCIA {
+  background-color: #980800d1;
+  color: #fff;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+  /* Menu lateral vira menu hamburger */
   .menu-vertical {
-    width: 200px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background-color: #333;
-    padding-top: 20px;
+    transform: translateX(-100%);
   }
-  
-  .menu-vertical ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .menu-vertical.active {
+    transform: translateX(0);
   }
-  
-  .menu-vertical ul li {
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .menu-vertical ul li a {
-    color: #fff;
-    text-decoration: none;
+  .hamburger {
     display: block;
-    padding: 10px;
   }
-  
-  .menu-vertical ul li a:hover {
-    background-color: #575757;
-  }
-  
-  /* Área de conteúdo (com margem à esquerda para o menu) */
+  /* Conteúdo principal ocupa toda a largura */
   .conteudo {
-    margin-left: 220px;
+    margin: 20px;
     padding: 20px;
   }
-  
+  /* Rodapé sem margem lateral */
+  footer {
+    margin-left: 0;
+    padding: 20px;
+  }
+  /* Esconde a tabela e mostra os blocos */
   table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    display: none;
   }
-  
-  table, th, td {
-    border: 1px solid #ccc;
+  .table-card {
+    display: block;
   }
-  
-  th, td {
-    padding: 8px;
-    text-align: center;
+}
+
+@media screen and (min-width: 769px) {
+  .table-card {
+    display: none;
   }
-  
-  /* Esquema de cores para cada estado */
-  .estado-AGUARDANDO {
-    color: #000;
-  }
-  
-  .estado-EM_ATENDIMENTO {
-    background-color: #ffeb3b;  /* amarelo */
-    color: #000;
-  }
-  
-  .estado-FINALIZADO {
-    background-color: #4caf50;  /* verde */
-    color: #fff;
-  }
-  
-  .estado-DESISTENCIA {
-    background-color: #f44336;  /* vermelho */
-    color: #fff;
-  }
-  
+}

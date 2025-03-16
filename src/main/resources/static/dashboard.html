@@ -1,34 +1,158 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Recepciona System</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - Recepciona System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Estilos específicos para o dashboard */
+    .dashboard-cards {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .dashboard-card {
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      border-radius: 8px;
+      width: 250px;
+      text-align: center;
+      margin: 10px;
+      transition: transform 0.3s ease;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+    }
+    .dashboard-card h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .dashboard-card p {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Recepciona System</h1>
-    </header>
-    
-    <nav class="menu-vertical">
-        <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="novo-atendimento.html">Novo Atendimento</a></li>
-            <li><a href="atendimentos-abertos.html">Atendimentos Abertos</a></li>
-            <li><a href="atendimentos-finalizados.html">Finalizados/Desistências</a></li>
-            <li><a href="index.html" id="logout">Sair</a></li>
-        </ul>
-    </nav>
-    
-    <div class="conteudo">
-        <h2>Bem-vindo ao Recepciona System</h2>
-        <p>Gerencie seus atendimentos de forma eficiente.</p>
+  <header class="cabecalho">
+    <h1>Recepciona System</h1>
+  </header>
+  
+  <nav class="menu-vertical">
+    <ul>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="novo-atendimento.html">Novo Atendimento</a></li>
+      <li><a href="atendimentos-abertos.html">Atendimentos Abertos</a></li>
+      <li><a href="atendimentos-finalizados.html">Finalizados/Desistências</a></li>
+      <li><a href="login.html" id="logout">Sair</a></li>
+    </ul>
+  </nav>
+  
+  <div class="conteudo">
+    <h2>Bem vindo ao Recepciona System !</h2>
+    <p>Acesse os módulos no menu vertifical para consultar as informações. </p>
+    <h2>Atendimentos</h2>
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <h3>Atendimentos de hoje</h3>
+        <p id="atendimentos-hoje">0</p>
+      </div>
+      <div class="dashboard-card">
+        <h3>Total de atendimentos no mês</h3>
+        <p id="atendimentos-mes">0</p>
+      </div>
+      <div class="dashboard-card">
+        <h3>Setor mais visitado do dia</h3>
+        <p id="setor-hoje">-</p>
+      </div>
+      <div class="dashboard-card">
+        <h3>Setor mais solicitado do mês</h3>
+        <p id="setor-mes">-</p>
+      </div>
     </div>
-    
-    <footer>
-        <p>Desenvolvido por Adriano Victor N. Ribeiro</p>
-    </footer>
+  </div>
+  
+  <footer>
+    <p>Desenvolvido por Adriano Victor N. Ribeiro</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mapeamento para exibir nome legível dos setores
+      const setoresMap = {
+        'ATENCAO_BASICA': 'Atenção Básica',
+        'SECRETARIA': 'Secretaria',
+        'VISA': 'Vigilância Sanitária',
+        'VIEP': 'Vigilância Epidemiológica',
+        'CPD': 'CPD',
+        'ALMOXARIFADO_COMPRAS': 'Almoxarifado/Compras'
+      };
+
+      // Função para contar frequência dos setores
+      function contarSetores(lista) {
+        return lista.reduce((contagens, item) => {
+          contagens[item.setor] = (contagens[item.setor] || 0) + 1;
+          return contagens;
+        }, {});
+      }
+
+      // Função para obter o setor com maior frequência
+      function setorMaisFrequente(contagens) {
+        let max = 0;
+        let setorMax = null;
+        for (const setor in contagens) {
+          if (contagens[setor] > max) {
+            max = contagens[setor];
+            setorMax = setor;
+          }
+        }
+        return setorMax;
+      }
+
+      // Busca os atendimentos via API
+      fetch('/api/paciente')
+        .then(response => response.json())
+        .then(data => {
+          const hoje = new Date();
+
+          // Filtrar atendimentos de hoje
+          const atendimentosHoje = data.filter(item => {
+            const dataEntrada = new Date(item.horarioEntrada);
+            return dataEntrada.toDateString() === hoje.toDateString();
+          });
+
+          // Filtrar atendimentos do mês atual
+          const atendimentosMes = data.filter(item => {
+            const dataEntrada = new Date(item.horarioEntrada);
+            return dataEntrada.getMonth() === hoje.getMonth() &&
+                   dataEntrada.getFullYear() === hoje.getFullYear();
+          });
+
+          // Atualiza os números nos cards
+          document.getElementById('atendimentos-hoje').textContent = atendimentosHoje.length;
+          document.getElementById('atendimentos-mes').textContent = atendimentosMes.length;
+
+          // Calcula o setor mais visitado do dia
+          const contagensHoje = contarSetores(atendimentosHoje);
+          const setorHoje = setorMaisFrequente(contagensHoje);
+          document.getElementById('setor-hoje').textContent = setorHoje ? setoresMap[setorHoje] : '-';
+
+          // Calcula o setor mais solicitado do mês
+          const contagensMes = contarSetores(atendimentosMes);
+          const setorMes = setorMaisFrequente(contagensMes);
+          document.getElementById('setor-mes').textContent = setorMes ? setoresMap[setorMes] : '-';
+        })
+        .catch(error => {
+          console.error('Erro ao buscar atendimentos:', error);
+        });
+    });
+  </script>
+  <script src="js/menu.js"></script>
 </body>
 </html>
-
