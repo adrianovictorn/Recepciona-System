@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         try {
-            const response = await fetch('/api/paciente', {
+            const response = await fetch("/api/paciente", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
